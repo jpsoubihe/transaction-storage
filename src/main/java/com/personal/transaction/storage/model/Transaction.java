@@ -3,6 +3,7 @@ package com.personal.transaction.storage.model;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class Transaction implements Serializable {
 
     Double amount;
 
-    Date transactionDate;
+    Instant transactionDate;
 
     Date createdAt;
 }
