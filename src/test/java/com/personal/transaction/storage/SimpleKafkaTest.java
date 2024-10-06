@@ -29,6 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class SimpleKafkaTest {
 
         Transaction t = Transaction.builder()
                 .description("Test transaction")
-                .transactionDate(new Date())
+                .transactionDate(Instant.now())
                 .amount(23.75)
                 .build();
         String serializedTransaction = objectMapper.writeValueAsString(t);
