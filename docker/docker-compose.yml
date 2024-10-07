@@ -36,3 +36,13 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_METRICS_PORT: 9997
       DYNAMIC_CONFIG_ENABLED: 'true'
+
+  postgres:
+    image: postgres:15.0
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: transaction_user
+      POSTGRES_DB: transaction_db
