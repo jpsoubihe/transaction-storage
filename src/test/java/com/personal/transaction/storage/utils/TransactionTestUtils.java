@@ -6,6 +6,8 @@ import java.time.Instant;
 
 public class TransactionTestUtils {
 
+    public static final String TEST_TRANSACTION_DATE = "2024-10-07";
+
     public static final String TEST_VALID_DESCRIPTION = "Test Description";
 
     public static final String TEST_INVALID_DESCRIPTION =
@@ -23,66 +25,66 @@ public class TransactionTestUtils {
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(-TEST_TRANSACTION_AMOUNT_1)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_NEGATIVE_AMOUNT_2 =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(-TEST_TRANSACTION_AMOUNT_2)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_POSITIVE_AMOUNT_1 =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(TEST_TRANSACTION_AMOUNT_1)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_POSITIVE_AMOUNT_2 =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(TEST_TRANSACTION_AMOUNT_2)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_NULL_AMOUNT =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_NULL_DESCRIPTION =
             Transaction.builder()
                     .amount(TEST_TRANSACTION_AMOUNT_2)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_TRANSACTION_WITH_INVALID_DESCRIPTION =
             Transaction.builder()
                     .amount(TEST_TRANSACTION_AMOUNT_2)
                     .description(TEST_INVALID_DESCRIPTION)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_STORED_COMPLETE_TRANSACTION =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(TEST_TRANSACTION_AMOUNT_2)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_STORED_CORRECTED_AMOUNT_TRANSACTION =
             Transaction.builder()
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(TEST_TRANSACTION_DEFAULT_AMOUNT)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 
     public static final Transaction TEST_STORED_NO_DESCRIPTION_TRANSACTION =
             Transaction.builder()
                     .amount(TEST_TRANSACTION_AMOUNT_1)
-                    .transactionDate(Instant.now())
+                    .transactionDate(TEST_TRANSACTION_DATE)
                     .build();
 }

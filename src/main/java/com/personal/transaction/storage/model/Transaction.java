@@ -5,7 +5,6 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +20,5 @@ public class Transaction implements Serializable {
 
     Double amount;
 
-    Instant transactionDate;
+    String transactionDate;
 }

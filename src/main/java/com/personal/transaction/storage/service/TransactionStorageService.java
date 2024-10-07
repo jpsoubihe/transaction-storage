@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -60,10 +63,15 @@ public class TransactionStorageService {
         return description;
     }
 
-    private Instant validateDate(Instant transactionDate) {
-        // check if transactionDate is on expected format
-        // if so do nothing
-        // if not, format as expected
+    private String validateDate(String transactionDate) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneId.of("UTC"));
+
+        try {
+            dateTimeFormatter.format(ZonedDateTime.parse(transactionDate));
+        } catch (Exception e) {
+            LOGGER.error("Wrong date in transaction payload {} storing current time in place.", transactionDate);
+            return dateTimeFormatter.format(Instant.now());
+        }
         return transactionDate;
     }
 

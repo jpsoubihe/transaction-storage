@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personal.transaction.storage.consumers.TransactionConsumer;
 import com.personal.transaction.storage.model.Transaction;
 import com.personal.transaction.storage.model.TransactionDeserializer;
+import com.personal.transaction.storage.utils.TransactionTestUtils;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -62,9 +62,9 @@ public class SimpleKafkaTest {
         Producer<String, byte[]> producer = configureProducer();
 
         Transaction t = Transaction.builder()
-                .description("Test transaction")
-                .transactionDate(Instant.now())
-                .amount(23.75)
+                .description(TransactionTestUtils.TEST_VALID_DESCRIPTION)
+                .transactionDate(TransactionTestUtils.TEST_TRANSACTION_DATE)
+                .amount(TransactionTestUtils.TEST_TRANSACTION_AMOUNT_2)
                 .build();
         String serializedTransaction = objectMapper.writeValueAsString(t);
         System.out.println("Object is " + serializedTransaction);
