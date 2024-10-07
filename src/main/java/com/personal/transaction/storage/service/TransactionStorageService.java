@@ -32,10 +32,10 @@ public class TransactionStorageService {
 
 
     public List<Transaction> storeTransactions(List<Transaction> transactionList) {
-        transactionList.stream().map(this::processTransactions).collect(Collectors.toList());
+        List<Transaction> validatedTransactions = transactionList.stream().map(this::processTransactions).collect(Collectors.toList());
         List<Transaction> persistedTransactions = null;
         try {
-            persistedTransactions = transactionRepository.saveAll(transactionList);
+            persistedTransactions = transactionRepository.saveAll(validatedTransactions);
         } catch (Exception ex) {
             LOGGER.error("Error saving transactions in DB.", ex);
             // ToDo: handle exception
