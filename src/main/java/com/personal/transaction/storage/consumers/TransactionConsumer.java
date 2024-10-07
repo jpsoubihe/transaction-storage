@@ -2,8 +2,10 @@ package com.personal.transaction.storage.consumers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personal.transaction.storage.model.Transaction;
+import com.personal.transaction.storage.service.TransactionStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,9 @@ public class TransactionConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionConsumer.class);
 
+    @Autowired
+    private TransactionStorageService transactionStorageService;
+
     @KafkaListener(
             id = "transaction-listener",
             topics = "transaction",
@@ -22,5 +27,6 @@ public class TransactionConsumer {
             properties = "value.deserializer:com.personal.transaction.storage.model.TransactionDeserializer")
     public void listen(List<Transaction> consumedTransactions) {
         LOGGER.info("Just received a transaction batch! {}", consumedTransactions);
+        transactionStorageService.storeTransactions(consumedTransactions);
     }
 }

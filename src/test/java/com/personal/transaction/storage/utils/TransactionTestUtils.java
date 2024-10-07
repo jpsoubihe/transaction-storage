@@ -11,9 +11,13 @@ public class TransactionTestUtils {
     public static final String TEST_INVALID_DESCRIPTION =
             "Test Description with more than 50 chars to break everything";
 
+    public static final double TEST_TRANSACTION_DEFAULT_AMOUNT = 0.00;
+
     public static final double TEST_TRANSACTION_AMOUNT_1 = 24.5674;
 
-    public static final double TEST_TRANSACTION_AMOUNT_2 = 2.3;
+    public static final double TEST_TRANSACTION_AMOUNT_2 = 24.56;
+
+    public static final int DESCRIPTION_MAX_LENGTH = 50;
 
     public static final Transaction TEST_TRANSACTION_WITH_NEGATIVE_AMOUNT_1 =
             Transaction.builder()
@@ -62,5 +66,23 @@ public class TransactionTestUtils {
                     .transactionDate(Instant.now())
                     .build();
 
-    public static final int DESCRIPTION_MAX_LENGTH = 50;
+    public static final Transaction TEST_STORED_COMPLETE_TRANSACTION =
+            Transaction.builder()
+                    .description(TEST_VALID_DESCRIPTION)
+                    .amount(TEST_TRANSACTION_AMOUNT_2)
+                    .transactionDate(Instant.now())
+                    .build();
+
+    public static final Transaction TEST_STORED_CORRECTED_AMOUNT_TRANSACTION =
+            Transaction.builder()
+                    .description(TEST_VALID_DESCRIPTION)
+                    .amount(TEST_TRANSACTION_DEFAULT_AMOUNT)
+                    .transactionDate(Instant.now())
+                    .build();
+
+    public static final Transaction TEST_STORED_NO_DESCRIPTION_TRANSACTION =
+            Transaction.builder()
+                    .amount(TEST_TRANSACTION_AMOUNT_1)
+                    .transactionDate(Instant.now())
+                    .build();
 }

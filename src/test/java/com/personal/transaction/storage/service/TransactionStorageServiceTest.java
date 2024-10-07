@@ -1,10 +1,16 @@
 package com.personal.transaction.storage.service;
 
 import com.personal.transaction.storage.model.Transaction;
+import com.personal.transaction.storage.repositories.TransactionRepository;
 import com.personal.transaction.storage.utils.TransactionTestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -13,9 +19,16 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+
+@ExtendWith(MockitoExtension.class)
 class TransactionStorageServiceTest {
 
+    @InjectMocks
     TransactionStorageService transactionStorageService = new TransactionStorageService();
+
+    @Mock
+    TransactionRepository transactionRepository;
 
     List<Transaction> transactionList;
 
@@ -57,49 +70,49 @@ class TransactionStorageServiceTest {
     @Test
     void testTransactionWithNegativeAmountAndMoreThan2Decimals() {
         givenTransactionWithNegativeAmountAndMoreThan2Decimal();
-        whenStoringTransactions();
+        whenStoringTransactionsWithInvalidAmount();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithNegativeAmountAndLessThan2Decimals() {
         givenTransactionWithNegativeAmountAndLessThan2Decimal();
-        whenStoringTransactions();
+        whenStoringTransactionsWithInvalidAmount();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithNullAmount() {
         givenTransactionWithNullAmount();
-        whenStoringTransactions();
+        whenStoringTransactionsWithInvalidAmount();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithPositiveAmountAndMoreThan2Decimals() {
         givenTransactionWithPositiveAmountAndMoreThan2Decimal();
-        whenStoringTransactions();
+        whenStoringCorrectTransactions();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithPositiveAmountAndLessThan2Decimals() {
         givenTransactionWithPositiveAmountAndLessThan2Decimal();
-        whenStoringTransactions();
+        whenStoringCorrectTransactions();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithNullDescription() {
         givenTransactionWithNullDescription();
-        whenStoringTransactions();
+        whenStoringTransactionsWithInvalidDescriptions();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
     @Test
     void testTransactionWithMoreThan50CharsDescription() {
         givenTransactionWithInvalidDescription();
-        whenStoringTransactions();
+        whenStoringTransactionsWithInvalidDescriptions();
         thenShouldHaveOnlyValidatedTransactions();
     }
 
@@ -131,7 +144,21 @@ class TransactionStorageServiceTest {
         transactionList = List.of(TransactionTestUtils.TEST_TRANSACTION_WITH_INVALID_DESCRIPTION);
     }
 
-    void whenStoringTransactions() {
+    void whenStoringCorrectTransactions() {
+        Mockito.when(transactionRepository.saveAll(transactionList))
+                .thenReturn(List.of(TransactionTestUtils.TEST_STORED_COMPLETE_TRANSACTION));
+        storedTransactions = transactionStorageService.storeTransactions(transactionList);
+    }
+
+    void whenStoringTransactionsWithInvalidDescriptions() {
+        Mockito.when(transactionRepository.saveAll(transactionList))
+                .thenReturn(List.of(TransactionTestUtils.TEST_STORED_NO_DESCRIPTION_TRANSACTION));
+        storedTransactions = transactionStorageService.storeTransactions(transactionList);
+    }
+
+    void whenStoringTransactionsWithInvalidAmount() {
+        Mockito.when(transactionRepository.saveAll(transactionList))
+                .thenReturn(List.of(TransactionTestUtils.TEST_STORED_CORRECTED_AMOUNT_TRANSACTION));
         storedTransactions = transactionStorageService.storeTransactions(transactionList);
     }
 
@@ -148,6 +175,7 @@ class TransactionStorageServiceTest {
 
     void shouldStoreTransactionsWithPositiveAmount() {
         storedTransactions.forEach(transaction -> Assertions.assertTrue(transaction.getAmount() >= 0));
+        //Todo: Assert cents rounding
     }
 
     void shouldStoreDescriptionWithMaximum50Chars() {
