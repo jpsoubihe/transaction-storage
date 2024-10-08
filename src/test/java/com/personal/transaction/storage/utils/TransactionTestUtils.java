@@ -6,7 +6,7 @@ import java.time.Instant;
 
 public class TransactionTestUtils {
 
-    public static final String TEST_TRANSACTION_DATE = "2024-10-07";
+    public static final Long TEST_TRANSACTION_DATE = 1728349215L;
 
     public static final String TEST_VALID_DESCRIPTION = "Test Description";
 

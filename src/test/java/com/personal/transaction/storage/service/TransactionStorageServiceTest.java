@@ -15,10 +15,13 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,6 +120,14 @@ class TransactionStorageServiceTest {
         givenTransactionWithInvalidDescription();
         whenStoringTransactionsWithInvalidDescriptions();
         thenShouldHaveOnlyValidatedTransactions();
+    }
+
+    @Test
+    void stringToInstant() throws ParseException {
+        String dateString = "2024-10-07 21:30:45z";
+        Date toDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(dateString);
+        System.out.println("Date "+ toDate.getTime() + " converted to millis " + toDate.toInstant().toEpochMilli());
+
     }
 
     void givenTransactionWithNegativeAmountAndMoreThan2Decimal() {

@@ -4,6 +4,7 @@ import com.personal.transaction.storage.exceptions.InvalidDescriptionException;
 import com.personal.transaction.storage.exceptions.InvalidTransactionAmountException;
 import com.personal.transaction.storage.model.Transaction;
 import com.personal.transaction.storage.repositories.TransactionRepository;
+import com.personal.transaction.storage.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,12 +44,26 @@ public class TransactionStorageService {
         return Optional.ofNullable(persistedTransactions).orElse(List.of());
     }
 
+    public List<Transaction> retrieveTransactions(String startDate, String endDate) throws ParseException {
+        Long startDateMillis = DateUtils.validateDate(startDate);
+        Long endDateMillis;
+
+        if (StringUtils.isNotEmpty(endDate)) {
+            endDateMillis = DateUtils.validateDate(endDate);
+        } else {
+            endDateMillis = Instant.now().toEpochMilli();
+        }
+
+        return transactionRepository.findAllByTransactionDate(startDateMillis, endDateMillis);
+    }
+
     private Transaction processTransactions(Transaction transaction) {
         return Transaction.builder()
                 .transactionId(UUID.randomUUID().toString())
                 .description(validateDescription(transaction.getDescription()))
                 .amount(validateTransactionAmount(transaction.getAmount()))
-                .transactionDate(validateDate(transaction.getTransactionDate()))
+                .transactionDate(Optional.ofNullable(transaction.getTransactionDate())
+                        .orElse(Instant.now().atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()))
                 .build();
     }
 
@@ -61,18 +75,6 @@ public class TransactionStorageService {
             return null;
         }
         return description;
-    }
-
-    private String validateDate(String transactionDate) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneId.of("UTC"));
-
-        try {
-            dateTimeFormatter.format(ZonedDateTime.parse(transactionDate));
-        } catch (Exception e) {
-            LOGGER.error("Wrong date in transaction payload {} storing current time in place.", transactionDate);
-            return dateTimeFormatter.format(Instant.now());
-        }
-        return transactionDate;
     }
 
     private double validateTransactionAmount(Double transactionAmount) {
