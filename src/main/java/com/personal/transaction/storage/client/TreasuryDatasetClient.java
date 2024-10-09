@@ -32,7 +32,7 @@ public class TreasuryDatasetClient {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    @Cacheable(cacheManager = "cacheManager")
+    @Cacheable("rateRequests")
     public ExchangeRate getExchangeRate(String recordDate, String countryCurrency) {
         ExchangeRate obtainedRates;
 

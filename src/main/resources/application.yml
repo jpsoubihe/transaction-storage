@@ -1,6 +1,12 @@
 server:
   port: 8081
 
+spring:
+  cache:
+    cache-names: "rateRequests"
+    caffeine:
+      spec: "maximumSize=200,expireAfterWrite=1d"
+
 management:
   endpoints:
     web:
