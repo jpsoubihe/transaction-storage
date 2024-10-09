@@ -13,4 +13,11 @@ public class TransactionControllerAdvisor {
     public ResponseEntity<String> parseException(ParseException parseException) {
         return ResponseEntity.badRequest().body("Date not on expected YYY-MM-DD hh-mm-ss format.");
     }
+
+    @ExceptionHandler(CurrencyExchangeNotAvailableException.class)
+    public ResponseEntity<String> currencyExchangeNotAvailableException(CurrencyExchangeNotAvailableException currencyExchangeNotAvailableException) {
+        return ResponseEntity
+                .status(currencyExchangeNotAvailableException.status)
+                .body(currencyExchangeNotAvailableException.getMessage());
+    }
 }

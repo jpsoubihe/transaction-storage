@@ -79,7 +79,6 @@ public class TransactionStorageService {
 
     private double validateTransactionAmount(Double transactionAmount) {
         if(transactionAmount == null || transactionAmount <= 0) {
-//            throw new InvalidTransactionAmountException(String.format("Transaction amount should have a valid positive value. Current value is {}.", transactionAmount));
            LOGGER.error("Error on transaction amount validation. " +
                    "Transaction amount should have a valid positive value. Current value is {}. " +
                    "Storing transaction with amount 0.", transactionAmount);

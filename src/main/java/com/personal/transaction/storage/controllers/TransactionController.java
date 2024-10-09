@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 
 @RequestMapping("v1/transactions")
@@ -33,6 +34,9 @@ public class TransactionController {
             @RequestParam(name = "end_date", required = false) String endDate
             ) throws ParseException {
         List<Transaction> retrievedTransactions = transactionStorageService.retrieveTransactions(startDate, endDate);
+        if (retrievedTransactions.isEmpty()) {
+            return ResponseEntity.ok(Collections.EMPTY_LIST);
+        }
         List<ConvertedTransactionResponse> convertedTransactions =
                 exchangeService.processCurrencyExchangeInfo(exchangeCurrency, startDate, retrievedTransactions);
         return ResponseEntity.ok(convertedTransactions);
