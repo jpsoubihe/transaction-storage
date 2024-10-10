@@ -1,4 +1,7 @@
 spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    topic: ${KAFKA_TRANSACTION_TOPIC:TRANSACTION.TOPIC}
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:postgresql:///test

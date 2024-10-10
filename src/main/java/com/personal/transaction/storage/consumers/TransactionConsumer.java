@@ -23,7 +23,7 @@ public class TransactionConsumer {
 
     @KafkaListener(
             id = "transaction-listener",
-            topics = "transaction",
+            topics = "${spring.kafka.topic}",
             clientIdPrefix = "transaction-listener",
             groupId = "transaction-listener",
             properties = "value.deserializer:com.personal.transaction.storage.model.TransactionDeserializer")

@@ -46,3 +46,23 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: transaction_user
       POSTGRES_DB: transaction_db
+
+#  transaction-storage:
+#    image: transaction-storage:0.0.1-SNAPSHOT
+#    container_name: transaction-storage
+#    ports:
+#      - 8081:8081
+#    depends_on:
+#      - kafka
+#      - postgres
+#    environment:
+#        POSTGRES_PASSWORD: password
+#        POSTGRES_ROOT_PASSWORD: password
+#        POSTGRES_ROOT_USER: transaction_user
+#        POSTGRES_USER: transaction_user
+#        POSTGRES_DB: transaction_db
+#        POSTGRES_HOST: postgres
+#        KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+#        KAFKA_TRANSACTION_TOPIC: TRANSACTION.TOPIC
+#    volumes:
+#      - ./transaction-storage/application.yml:/app/resources/application.yml

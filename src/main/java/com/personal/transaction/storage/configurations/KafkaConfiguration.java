@@ -1,9 +1,9 @@
 package com.personal.transaction.storage.configurations;
 
-import com.personal.transaction.storage.model.TransactionDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -21,6 +21,9 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConfiguration {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
     @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>>
     kafkaListenerContainerFactory() {
@@ -29,8 +32,6 @@ public class KafkaConfiguration {
         factory.setConsumerFactory(consumerFactory());
         factory.setRecordMessageConverter(new JsonMessageConverter());
         factory.setBatchListener(true);
-//        factory.setConcurrency(3);
-//        factory.getContainerProperties().setPollTimeout(3000);
         return factory;
     }
 
@@ -39,7 +40,7 @@ public class KafkaConfiguration {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 }
