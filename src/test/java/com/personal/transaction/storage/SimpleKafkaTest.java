@@ -109,7 +109,6 @@ public class SimpleKafkaTest {
 
     @Test
     public void testReceivingKafkaEvents() throws IOException, InterruptedException {
-//        Consumer<String, Transaction> consumer = configureConsumer();
         Producer<String, byte[]> producer = configureProducer();
 
         Transaction t = Transaction.builder()
@@ -117,18 +116,9 @@ public class SimpleKafkaTest {
                 .transactionDate(TransactionTestUtils.TEST_TRANSACTION_DATE)
                 .amount(TransactionTestUtils.TEST_TRANSACTION_AMOUNT_2)
                 .build();
-        String serializedTransaction = objectMapper.writeValueAsString(t);
-//        System.out.println("Object is " + serializedTransaction);
-//        System.out.println("Object is " + objectMapper.readValue(serializedTransaction, Transaction.class));
-
 
         producer.send(new ProducerRecord<>(TEST_TOPIC, "my-test-key", objectMapper.writeValueAsString(t).getBytes(StandardCharsets.UTF_8)));
 
-//        ConsumerRecord<String, Transaction> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TEST_TOPIC);
-//        assertThat(singleRecord).isNotNull();
-//        assertThat(singleRecord.key()).isEqualTo("my-test-key");
-//        assertThat(singleRecord.value()).isEqualTo(t);
-//        consumer.close();
         Thread.sleep(2000);
         producer.close();
     }

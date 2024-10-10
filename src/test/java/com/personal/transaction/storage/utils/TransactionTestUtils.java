@@ -3,6 +3,7 @@ package com.personal.transaction.storage.utils;
 import com.personal.transaction.storage.model.Transaction;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class TransactionTestUtils {
 
@@ -77,6 +78,7 @@ public class TransactionTestUtils {
 
     public static final Transaction TEST_STORED_CORRECTED_AMOUNT_TRANSACTION =
             Transaction.builder()
+                    .transactionId(UUID.randomUUID().toString())
                     .description(TEST_VALID_DESCRIPTION)
                     .amount(TEST_TRANSACTION_DEFAULT_AMOUNT)
                     .transactionDate(TEST_TRANSACTION_DATE)
@@ -84,6 +86,7 @@ public class TransactionTestUtils {
 
     public static final Transaction TEST_STORED_NO_DESCRIPTION_TRANSACTION =
             Transaction.builder()
+                    .transactionId(UUID.randomUUID().toString())
                     .amount(TEST_TRANSACTION_AMOUNT_1)
                     .transactionDate(TEST_TRANSACTION_DATE)
                     .build();

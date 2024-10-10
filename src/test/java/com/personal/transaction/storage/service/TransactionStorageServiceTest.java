@@ -159,19 +159,19 @@ class TransactionStorageServiceTest {
     }
 
     void whenStoringCorrectTransactions() {
-        Mockito.when(transactionRepository.saveAll(transactionList))
+        Mockito.when(transactionRepository.saveAll(any()))
                 .thenReturn(List.of(TransactionTestUtils.TEST_STORED_COMPLETE_TRANSACTION));
         storedTransactions = transactionStorageService.storeTransactions(transactionList);
     }
 
     void whenStoringTransactionsWithInvalidDescriptions() {
-        Mockito.when(transactionRepository.saveAll(transactionList))
+        Mockito.when(transactionRepository.saveAll(any()))
                 .thenReturn(List.of(TransactionTestUtils.TEST_STORED_NO_DESCRIPTION_TRANSACTION));
         storedTransactions = transactionStorageService.storeTransactions(transactionList);
     }
 
     void whenStoringTransactionsWithInvalidAmount() {
-        Mockito.when(transactionRepository.saveAll(transactionList))
+        Mockito.when(transactionRepository.saveAll(any()))
                 .thenReturn(List.of(TransactionTestUtils.TEST_STORED_CORRECTED_AMOUNT_TRANSACTION));
         storedTransactions = transactionStorageService.storeTransactions(transactionList);
     }
@@ -189,7 +189,6 @@ class TransactionStorageServiceTest {
 
     void shouldStoreTransactionsWithPositiveAmount() {
         storedTransactions.forEach(transaction -> Assertions.assertTrue(transaction.getAmount() >= 0));
-        //Todo: Assert cents rounding
     }
 
     void shouldStoreDescriptionWithMaximum50Chars() {
@@ -199,7 +198,4 @@ class TransactionStorageServiceTest {
                             Assertions.assertTrue(description.length() <= TransactionTestUtils.DESCRIPTION_MAX_LENGTH));
         });
     }
-
-
-
 }
