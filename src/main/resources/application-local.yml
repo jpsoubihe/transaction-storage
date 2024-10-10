@@ -1,15 +1,11 @@
 spring:
-  cache:
-    cache-names: "rateRequests"
-    caffeine:
-      spec: "maximumSize=200,expireAfterWrite=1d"
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
     topic: ${KAFKA_TRANSACTION_TOPIC:TRANSACTION.TOPIC}
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/transaction_db
-    user: transaction_user
+    username: transaction_user
     password: password
   flyway:
     url: jdbc:postgresql://localhost:5432/transaction_db
