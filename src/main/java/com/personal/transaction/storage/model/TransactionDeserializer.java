@@ -26,15 +26,13 @@ public class TransactionDeserializer implements Deserializer<Transaction>, Seria
 
     @Override
     public Transaction deserialize(String s, byte[] bytes) {
-        LOGGER.info("Deserializing transaction");
-        Transaction t = null;
+        Transaction t;
         try {
             t = OBJECT_MAPPER.readValue(bytes, Transaction.class);
         } catch (Exception e) {
             LOGGER.error("Problems when deserializing consumed transaction.");
             throw new RuntimeException(e);
         }
-//        t.setTransactionId(UUID.randomUUID().toString());
         return t;
     }
 

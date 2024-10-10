@@ -34,11 +34,13 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.3'
     implementation 'org.flywaydb:flyway-core:10.17.3'
     implementation 'com.github.ben-manes.caffeine:caffeine'
+    implementation 'ch.qos.logback:logback-core'
     runtimeOnly 'org.flywaydb:flyway-database-postgresql:10.17.3'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'ch.qos.logback:logback-classic'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'

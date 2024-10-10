@@ -7,6 +7,9 @@ import com.personal.transaction.storage.model.ExchangeCurrencyDto;
 import com.personal.transaction.storage.model.ExchangeRate;
 import com.personal.transaction.storage.model.Transaction;
 import com.personal.transaction.storage.utils.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,17 +25,15 @@ import java.util.List;
 @Service
 public class ExchangeService {
 
-    TreasuryDatasetClient treasuryDatasetClient;
+    private static final Logger LOGGER = LoggerFactory.getLogger("TRANSACTION_REQUEST");
 
-    public ExchangeService(TreasuryDatasetClient treasuryDatasetClient) {
-        this.treasuryDatasetClient = treasuryDatasetClient;
-    }
+    @Autowired
+    private TreasuryDatasetClient treasuryDatasetClient;
 
     public List<ConvertedTransactionResponse> processCurrencyExchangeInfo(String exchangeCurrency, String startDate, List<Transaction> transactionList) throws ParseException {
-
+        LOGGER.info("Processing exchange to {} for {} transactions", exchangeCurrency, transactionList.size());
         String recordDate = prepareRecordMinDate(startDate);
         Double numericRate = getExchangeRateForCurrency(exchangeCurrency, recordDate);
-
         return transactionList.stream()
                .map(transaction ->
                        ConvertedTransactionResponse.builder()

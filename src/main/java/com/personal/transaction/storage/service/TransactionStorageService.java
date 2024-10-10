@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class TransactionStorageService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionStorageService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("TRANSACTION_CONSUMER");
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -35,6 +35,7 @@ public class TransactionStorageService {
         List<Transaction> validatedTransactions = transactionList.stream().map(this::processTransactions).collect(Collectors.toList());
         List<Transaction> persistedTransactions = null;
         try {
+            LOGGER.info("Saving {} transaction in DB.", transactionList.size());
             persistedTransactions = transactionRepository.saveAll(validatedTransactions);
         } catch (Exception ex) {
             LOGGER.error("Error saving transactions in DB.", ex);

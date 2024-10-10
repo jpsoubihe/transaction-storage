@@ -1,0 +1,29 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="REQUEST_PERFORMED" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] [%mdc{requestId}] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name = "TRANSACTION_REQUEST" level = "INFO" additivity = "false">
+        <appender-ref ref="REQUEST_PERFORMED"/>
+    </logger>
+
+    <logger name = "TREASURY_CLIENT" level = "INFO" additivity = "false">
+        <appender-ref ref="REQUEST_PERFORMED"/>
+    </logger>
+
+    <logger name = "TRANSACTION_CONSUMER" level = "INFO" additivity = "false">
+        <appender-ref ref="REQUEST_PERFORMED"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
