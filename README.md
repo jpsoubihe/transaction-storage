@@ -10,11 +10,63 @@ To run it locally you'll have to
 1. Ensure to have JAVA 21 version installed in your environment (JAVA_HOME or IDE).
 2. Ensure to have docker-compose and run docker-compose file of this project, located inside docker/ folder
 3. Ensure to have gradle
-4. Then we are finally prepared to run our service through command below
+4. Then we are finally prepared to run our service through commands below
+
+We have a docker-compose file set at docker/ directory that already have everything set. 
+As our application is not present in a public docker registry, someone that clones it and tries to run must generate 
+respective docker image.
+
+For that we are integrating [jib plugin](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin) 
+to our application lifecycle, which allow us to generate it through
 
 ```
- gradle bootRun --args='--spring.profiles.active=local'
+gradle jibDockerBuild
 ```
+
+This will build and store image locally. 
+
+Now we are able to run
+
+```
+docker-compose up -d
+```
+to run containers and application dependencies.
+
+transaction-storage container should be running on port 8081 and ready to consume messages and retrieve 
+its currency exchanges.
+
+## Test
+
+To test application we can simply run `gradle test`.
+
+But maybe you want to play a little with our application too. For that we can use some sidecar tools.
+
+The repeatable migration we've set already is storing our db with some transactions from 2024-10-10. 
+But we can also populate it by sending transaction messages in kafka-ui. Once we start docker containers, 
+you should be able to access following link on mapped 8080 port.
+
+`http://localhost:8080/ui/clusters/local/all-topics/TRANSACTION.TOPIC`
+
+There we can **Produce Message** and see our app consuming and processing it. Below a sample of transaction payload 
+we can use
+
+```
+{
+  "description": "Test",
+  "amount": 23.456,
+  "transactionDate": <some epoch value (optional)>
+}
+```
+
+Then we can play with our API with the sample requests
+
+```
+curl --location 'http://localhost:8081/v1/transactions?exchange_currency=<country-currency>&start_date=<YYYY-MM-DD hh:mm:ss>'
+
+curl --location 'http://localhost:8081/v1/transactions?exchange_currency=Brazil-Real&start_date=2024-10-09%2020%3A30%3A00'
+```
+
+A deeper dive into our app.
 
 We are working with basically two features:
 
