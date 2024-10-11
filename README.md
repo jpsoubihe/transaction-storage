@@ -20,7 +20,7 @@ For that we are integrating [jib plugin](https://github.com/GoogleContainerTools
 to our application lifecycle, which allow us to generate it through
 
 ```
-gradle jibDockerBuild
+./gradlew jibDockerBuild
 ```
 
 This will build and store image locally. 
@@ -37,7 +37,7 @@ its currency exchanges.
 
 ## Test
 
-To test application we can simply run `gradle test`.
+To test application we can simply run `./gradlew test`.
 
 But maybe you want to play a little with our application too. For that we can use some sidecar tools.
 
