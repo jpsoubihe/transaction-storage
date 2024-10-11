@@ -61,9 +61,9 @@ we can use
 Then we can play with our API with the sample requests
 
 ```
-curl --location 'http://localhost:8081/v1/transactions?exchange_currency=<country-currency>&start_date=<YYYY-MM-DD hh:mm:ss>'
+curl --location 'http://localhost:8081/v1/transactions?exchange_currency=<country-currency>&start_date=<YYYY-MM-DD hh:mm:ss>&end_date=<YYYY-MM-DD hh:mm:ss>'
 
-curl --location 'http://localhost:8081/v1/transactions?exchange_currency=Brazil-Real&start_date=2024-10-09%2020%3A30%3A00'
+curl --location 'http://localhost:8081/v1/transactions?exchange_currency=Brazil-Real&start_date=2024-10-09%2020%3A30%3A000&end_date=2024-10-11%2023%3A20%3A00'
 ```
 
 A deeper dive into our app.
@@ -137,3 +137,31 @@ If validation fails we're going to log it and store a 0.0 value.
 
 
 ## 2 - Retrieve stored Transaction in a Certain Currency
+
+We have implemented an API to retrieve those transactions, based on their date, with corrected amount accordingly to 
+informed **exchange_currency**.
+
+It's a GET API responding by the path below
+
+`v1/transactions`
+
+and the following parameters
+- exchange_currency
+- start_date
+- end_date (optional)
+
+Dates are expected to be shown in format YYYY-MM-DD hh:mm:ss.
+
+Exchange currency is expected to be informed in the format used to interact with Treasury APIs, in a country-currency 
+model, for example, **Brazil-Real** or **Canada-Dollar**.
+
+Once request is accepted, we'll get respective currency rate on an external source. It's a external API used for a lot 
+of small projects to apply this kind of processes.
+
+Documentation for it can be seen
+[here](https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchange/treasury-reporting-rates-of-exchange).
+
+It's important to mention that our application will use the most recent exchange rate recorded on this datasource. 
+We'll search for messages until 6 months prior to most recent record, if not found any rate, we'll return a message 
+indicating for client we were not able to convert transactions to respective currency.
+
