@@ -73,7 +73,7 @@ public class TransactionStorageService {
         if(StringUtils.isNotEmpty(description) && description.length() > 50) {
 //            throw new InvalidDescriptionException("Invalid description, size is larger than 50 chars.");
             LOGGER.error("Invalid description, size is larger than 50 chars.");
-            return null;
+            return StringUtils.EMPTY;
         }
         return description;
     }
