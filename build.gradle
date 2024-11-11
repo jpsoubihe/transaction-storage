@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.personal'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.26'
 
 java {
     toolchain {

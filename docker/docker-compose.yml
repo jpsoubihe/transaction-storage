@@ -48,7 +48,8 @@ services:
       POSTGRES_DB: transaction_db
 
   transaction-storage:
-    image: transaction-storage:0.0.1-SNAPSHOT
+    image: transaction-storage:0.0.26.2
+    build: ../
     container_name: transaction-storage
     ports:
       - 8081:8081
@@ -56,6 +57,7 @@ services:
       - kafka
       - postgres
     environment:
+        SPRING_PROFILES_ACTIVE: local
         POSTGRES_PASSWORD: password
         POSTGRES_ROOT_PASSWORD: password
         POSTGRES_ROOT_USER: transaction_user
