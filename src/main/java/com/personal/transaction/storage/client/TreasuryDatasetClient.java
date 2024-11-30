@@ -41,10 +41,10 @@ public class TreasuryDatasetClient {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            LOGGER.debug("Status code from external API: " + response.statusCode());
+            LOGGER.debug("Status code from external API: {}", response.statusCode());
 
             obtainedRates = OBJECT_MAPPER.readValue(response.body(), ExchangeRate.class);
-            LOGGER.debug("Response body from external API " + obtainedRates);
+            LOGGER.debug("Response body from external API {}", obtainedRates);
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Error when sending request to external API.", e);
             throw new CurrencyExchangeNotAvailableException(502, "Error obtaining exchange currency.");
